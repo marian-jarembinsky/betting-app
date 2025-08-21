@@ -1,0 +1,37 @@
+<div class="min-h-screen flex align-items-center justify-content-center bg-gray-100 p-2 md:p-4">
+  <div class="max-w-md w-full">
+    <p-card header="Login" class="text-center">
+      <div class="mb-4 md:mb-6">
+        <h2 class="text-xl md:text-2xl font-bold mb-2">Tipovacka</h2>
+        <p class="text-gray-600 text-sm md:text-base px-2">Sign in with your Google account to access.</p>
+      </div>
+
+      <div class="mb-4" *ngIf="errorMessage">
+        <p-message severity="error" [text]="errorMessage"></p-message>
+      </div>
+
+      <!-- Google Sign-In Button Container -->
+      <div class="flex justify-content-center mb-4">
+        <div #googleButton id="google-signin-button" class="w-full flex justify-content-center"></div>
+      </div>
+
+      <!-- Fallback button if Google button doesn't render -->
+      <div class="flex justify-content-center">
+        <p-button
+          label="Sign in with Google"
+          icon="pi pi-google"
+          [loading]="loading"
+          (click)="onGoogleSignIn()"
+          class="w-full"
+          styleClass="p-button-outlined p-button-lg">
+        </p-button>
+      </div>
+
+      <div class="mt-4 text-center">
+        <small class="text-gray-500 text-xs md:text-sm">
+          Only authorized administrators can access this area
+        </small>
+      </div>
+    </p-card>
+  </div>
+</div>
