@@ -1,4 +1,5 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 export interface GoogleUser {
@@ -24,21 +25,28 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<GoogleUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private isGoogleInitialized = false;
-  private rawJwtToken: string | null = null; // Store raw token
+  private rawJwtToken: string | null = null;
+  private isBrowser: boolean;
 
   // Replace with your actual Google OAuth2 Client ID
   private readonly GOOGLE_CLIENT_ID = '258929424671-34jiosobemmk9ua84huved7tnp4uvd71.apps.googleusercontent.com';
 
-  constructor() {
-    this.loadGoogleScript();
-    // Check if user is already logged in from localStorage
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      this.currentUserSubject.next(JSON.parse(savedUser));
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    if (this.isBrowser) {
+      this.loadGoogleScript();
+      // Check if user is already logged in from localStorage
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        this.currentUserSubject.next(JSON.parse(savedUser));
+      }
     }
   }
 
   private loadGoogleScript(): void {
+    if (!this.isBrowser) return;
+
     if (typeof window !== 'undefined' && !window.google) {
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
@@ -48,13 +56,15 @@ export class AuthService {
         this.initializeGoogleAuth();
       };
       document.head.appendChild(script);
-    } else if (window.google) {
+    } else if (typeof window !== 'undefined' && window.google) {
       this.initializeGoogleAuth();
     }
   }
 
   private initializeGoogleAuth(): void {
-    if (window.google && !this.isGoogleInitialized) {
+    if (!this.isBrowser) return;
+
+    if (typeof window !== 'undefined' && window.google && !this.isGoogleInitialized) {
       window.google.accounts.id.initialize({
         client_id: this.GOOGLE_CLIENT_ID,
         callback: (response: any) => this.handleGoogleResponse(response),
@@ -66,6 +76,8 @@ export class AuthService {
   }
 
   private handleGoogleResponse(response: any): void {
+    if (!this.isBrowser) return;
+
     try {
       // Store the raw JWT token
       this.rawJwtToken = response.credential;
@@ -80,13 +92,13 @@ export class AuthService {
         picture: payload.picture,
         given_name: payload.given_name,
         family_name: payload.family_name,
-        rawToken: response.credential // Include raw token in user object
+        rawToken: response.credential
       };
 
       // Check if user is authorized
       if (this.isAuthorizedUser(user.email)) {
         localStorage.setItem('currentUser', JSON.stringify(user));
-        localStorage.setItem('jwtToken', response.credential); // Store token separately
+        localStorage.setItem('jwtToken', response.credential);
         this.currentUserSubject.next(user);
       } else {
         console.error('Unauthorized user attempted to login:', user.email);
@@ -111,7 +123,13 @@ export class AuthService {
 
   signInWithGoogle(): Observable<boolean> {
     return new Observable(observer => {
-      if (this.isGoogleInitialized && window.google) {
+      if (!this.isBrowser) {
+        observer.next(false);
+        observer.complete();
+        return;
+      }
+
+      if (this.isGoogleInitialized && typeof window !== 'undefined' && window.google) {
         window.google.accounts.id.prompt((notification: any) => {
           if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
             observer.next(false);
@@ -135,7 +153,9 @@ export class AuthService {
   }
 
   renderGoogleButton(element: HTMLElement): void {
-    if (this.isGoogleInitialized && window.google) {
+    if (!this.isBrowser) return;
+
+    if (this.isGoogleInitialized && typeof window !== 'undefined' && window.google) {
       window.google.accounts.id.renderButton(element, {
         theme: 'outline',
         size: 'large',
@@ -148,11 +168,15 @@ export class AuthService {
   }
 
   logout(): void {
-    if (window.google) {
+    if (!this.isBrowser) return;
+
+    if (typeof window !== 'undefined' && window.google) {
       window.google.accounts.id.disableAutoSelect();
     }
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('jwtToken'); // Remove token
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('jwtToken');
+    }
     this.rawJwtToken = null;
     this.currentUserSubject.next(null);
   }
@@ -166,7 +190,9 @@ export class AuthService {
   }
 
   getRawToken(): string | null {
-    return this.rawJwtToken || localStorage.getItem('jwtToken');
+    if (!this.isBrowser) return null;
+
+    return this.rawJwtToken || (typeof localStorage !== 'undefined' ? localStorage.getItem('jwtToken') : null);
   }
 
   getDecodedToken(): any {

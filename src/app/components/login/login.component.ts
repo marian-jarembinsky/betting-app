@@ -3,7 +3,7 @@ import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
 import {MessageModule} from 'primeng/message';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -34,13 +34,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // Check if user is already logged in
     if (this.authService.isLoggedIn()) {
-      this.redirectToManagement();
+      this.redirectToHome();
     }
 
     // Subscribe to auth state changes
     this.authService.currentUser$.subscribe(user => {
       if (user) {
-        this.redirectToManagement();
+        this.redirectToHome();
       }
     });
   }
@@ -74,8 +74,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private redirectToManagement(): void {
-    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/management/dashboard';
+  private redirectToHome(): void {
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
     this.router.navigate([returnUrl]);
   }
 }

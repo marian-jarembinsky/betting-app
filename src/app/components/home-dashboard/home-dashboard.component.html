@@ -1,1 +1,62 @@
-<p>home-dashboard works!</p>
+<div class="dashboard-container">
+  <div *ngIf="isLoading" class="loading-container">
+    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8"></p-progressSpinner>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="!isLoading && isAuthenticated && user" class="user-info">
+    <div class="dashboard-header">
+      <h2>Welcome to Your Dashboard</h2>
+      <p-button
+        label="Logout"
+        icon="pi pi-sign-out"
+        severity="danger"
+        (onClick)="logout()">
+      </p-button>
+    </div>
+
+    <p-card header="User Profile" styleClass="user-card">
+      <div class="user-profile-content">
+        <div class="user-avatar-section">
+          <p-avatar
+            *ngIf="user.picture; else avatarPlaceholder"
+            [image]="user.picture"
+            size="xlarge"
+            shape="circle">
+          </p-avatar>
+          <ng-template #avatarPlaceholder>
+            <p-avatar
+              [label]="user.name.charAt(0) || 'U'"
+              size="xlarge"
+              shape="circle"
+              styleClass="bg-primary">
+            </p-avatar>
+          </ng-template>
+        </div>
+
+        <div class="user-details">
+          <h3>{{ user.name }}</h3>
+          <p class="email">{{ user.email }}</p>
+          <p-tag
+            *ngIf="user.email"
+            severity="success"
+            icon="pi pi-check"
+            value="Email Verified">
+          </p-tag>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div *ngIf="!isLoading && !isAuthenticated" class="not-authenticated">
+    <p-card header="Authentication Required">
+      <p>Please log in to view your dashboard</p>
+      <p-button
+        label="Go to Login"
+        icon="pi pi-sign-in"
+        (onClick)="router.navigate(['/login'])"
+        styleClass="mt-3">
+      </p-button>
+    </p-card>
+  </div>
+</div>

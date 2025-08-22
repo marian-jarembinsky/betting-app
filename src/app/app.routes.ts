@@ -1,11 +1,19 @@
 import { Routes } from '@angular/router';
-import {LoginComponent} from './components/login/login.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomeDashboardComponent } from './components/home-dashboard/home-dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RedirectGuard } from './guards/redirect.guard';
 
 export const routes: Routes = [
-  // Admin routes (completely separate)
-  { path: 'management/login', component: LoginComponent }, // Remove AuthGuard from login
-  { path: 'management', redirectTo: 'management/dashboard', pathMatch: 'full' },
+  // Default route - redirects based on auth status
+  { path: '', canActivate: [RedirectGuard], children: [] },
 
-  // Catch all - redirect to visitor home
-  {path: '**', redirectTo: ''}
+  // Login route
+  { path: 'login', component: LoginComponent },
+
+  // Protected dashboard route
+  { path: 'dashboard', component: HomeDashboardComponent, canActivate: [AuthGuard] },
+
+  // Catch all - redirect to default route
+  { path: '**', redirectTo: '' }
 ];

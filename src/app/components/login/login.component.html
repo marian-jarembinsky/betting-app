@@ -1,37 +1,35 @@
-<div class="min-h-screen flex align-items-center justify-content-center bg-gray-100 p-2 md:p-4">
-  <div class="max-w-md w-full">
-    <p-card header="Login" class="text-center">
-      <div class="mb-4 md:mb-6">
-        <h2 class="text-xl md:text-2xl font-bold mb-2">Tipovacka</h2>
-        <p class="text-gray-600 text-sm md:text-base px-2">Sign in with your Google account to access.</p>
+<div class="login-container">
+  <p-card header="Sign In" styleClass="login-card">
+    <div class="login-content">
+      <div class="app-title">
+        <h2>Tipovacka</h2>
+        <p>Sign in with your Google account to continue</p>
       </div>
 
-      <div class="mb-4" *ngIf="errorMessage">
+      <div class="error-message" *ngIf="errorMessage">
         <p-message severity="error" [text]="errorMessage"></p-message>
       </div>
 
-      <!-- Google Sign-In Button Container -->
-      <div class="flex justify-content-center mb-4">
-        <div #googleButton id="google-signin-button" class="w-full flex justify-content-center"></div>
+      <!-- Google Sign-In Button Container (Official Google Button) -->
+      <div class="google-button-container">
+        <div #googleButton id="google-signin-button"></div>
       </div>
 
-      <!-- Fallback button if Google button doesn't render -->
-      <div class="flex justify-content-center">
+      <!-- Fallback Google Button -->
+      <div class="fallback-button">
         <p-button
           label="Sign in with Google"
           icon="pi pi-google"
           [loading]="loading"
-          (click)="onGoogleSignIn()"
-          class="w-full"
-          styleClass="p-button-outlined p-button-lg">
+          (onClick)="onGoogleSignIn()"
+          styleClass="p-button-outlined google-btn"
+          size="large">
         </p-button>
       </div>
 
-      <div class="mt-4 text-center">
-        <small class="text-gray-500 text-xs md:text-sm">
-          Only authorized administrators can access this area
-        </small>
+      <div class="disclaimer">
+        <small>Only authorized users can access this application</small>
       </div>
-    </p-card>
-  </div>
+    </div>
+  </p-card>
 </div>
