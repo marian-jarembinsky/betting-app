@@ -1,5 +1,5 @@
 <div class="login-container">
-  <p-card header="Sign In" styleClass="login-card">
+  <p-card styleClass="login-card">
     <div class="login-content">
       <div class="app-title">
         <h2>Tipovacka</h2>
@@ -10,26 +10,11 @@
         <p-message severity="error" [text]="errorMessage"></p-message>
       </div>
 
-      <!-- Google Sign-In Button Container (Official Google Button) -->
+      <!-- Google Official Sign-In Button -->
       <div class="google-button-container">
-        <div #googleButton id="google-signin-button"></div>
+        <div #googleButton class="google-signin-button"></div>
       </div>
 
-      <!-- Fallback Google Button -->
-      <div class="fallback-button">
-        <p-button
-          label="Sign in with Google"
-          icon="pi pi-google"
-          [loading]="loading"
-          (onClick)="onGoogleSignIn()"
-          styleClass="p-button-outlined google-btn"
-          size="large">
-        </p-button>
-      </div>
-
-      <div class="disclaimer">
-        <small>Only authorized users can access this application</small>
-      </div>
     </div>
   </p-card>
 </div>
