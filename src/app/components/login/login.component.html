@@ -1,4 +1,17 @@
 <div class="login-container">
+  <!-- Theme toggle button in top right corner -->
+  <div class="theme-toggle-container">
+    <p-button
+      [icon]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="toggleTheme()"
+      [pTooltip]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+      tooltipPosition="left"
+      styleClass="theme-toggle-btn">
+    </p-button>
+  </div>
+
   <p-card styleClass="login-card">
     <div class="login-content">
       <div class="app-title">
@@ -15,6 +28,9 @@
         <div #googleButton class="google-signin-button"></div>
       </div>
 
+      <div class="disclaimer">
+        <small>Only authorized users can access this application</small>
+      </div>
     </div>
   </p-card>
 </div>

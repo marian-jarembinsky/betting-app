@@ -8,11 +8,16 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 14px;
+}
+
 body {
   margin: 0;
-  font-family: var(--p-font-family);
-  background-color: var(--p-surface-ground);
+  font-family: var(--p-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  background: var(--p-surface-ground);
   color: var(--p-text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Utility classes for better responsive design */
@@ -32,7 +37,45 @@ body {
   margin-bottom: 1rem !important;
 }
 
+.mr-2 {
+  margin-right: 0.5rem !important;
+}
+
 .bg-primary {
   background-color: var(--p-primary-color) !important;
   color: var(--p-primary-color-text) !important;
+}
+
+/* Ensure PrimeNG components inherit the theme properly */
+.p-component {
+  font-family: inherit;
+}
+
+/* Custom overrides for better dark/light mode support */
+.app-light .p-toolbar {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-content-border-color);
+}
+
+.app-dark .p-toolbar {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-content-border-color);
+}
+
+.app-light .p-card {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-content-border-color);
+}
+
+.app-dark .p-card {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-content-border-color);
+}
+
+/* Ensure smooth transitions for theme changes */
+.p-toolbar,
+.p-card,
+.p-button,
+.p-inputtext {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
