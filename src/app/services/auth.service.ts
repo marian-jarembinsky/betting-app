@@ -79,7 +79,7 @@ export class AuthService {
 
   private handleCredentialResponse(response: any): void {
     try {
-      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      const payload = JSON.parse(this.decodeJWTPayload(response.credential.split('.')[1]));
 
       const user: GoogleUser = {
         id: payload.sub,
@@ -105,6 +105,24 @@ export class AuthService {
     } catch (error) {
       console.error('Error processing Google response:', error);
     }
+  }
+
+  private decodeJWTPayload(base64Url: string): string {
+    // Replace URL-safe characters
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+
+    // Decode base64 to binary string
+    const binaryString = atob(base64);
+
+    // Convert binary string to UTF-8
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    // Decode UTF-8 bytes to string
+    const decoder = new TextDecoder('utf-8');
+    return decoder.decode(bytes);
   }
 
   private isAuthorizedUser(email: string): boolean {
@@ -181,7 +199,7 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      return JSON.parse(atob(token.split('.')[1]));
+      return JSON.parse(this.decodeJWTPayload(token.split('.')[1]));
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
