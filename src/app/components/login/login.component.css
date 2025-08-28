@@ -1,73 +1,92 @@
-/* Login Container */
+/* Login Container - Responsive Foundation */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   transition: background 0.3s ease;
+  width: 100%;
+  overflow-x: hidden;
 }
 
+/* Theme Toggle - Responsive */
 .theme-toggle-container {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 1.5rem;
+  right: 1.5rem;
   z-index: 1000;
 }
 
 .theme-toggle-btn {
   border-radius: 50% !important;
-  width: 48px !important;
-  height: 48px !important;
+  width: 3rem !important;
+  height: 3rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px);
 }
 
 .theme-toggle-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
+/* Login Card - Responsive */
 .login-card {
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
 }
 
 .login-content {
   text-align: center;
-  padding: 20px;
+  padding: 2rem;
 }
 
-/* App Title */
+/* App Title - Responsive */
 .app-title {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
 .app-title h2 {
-  margin: 0 0 10px 0;
-  color: var(--text-color);
-  font-size: 2rem;
-  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: var(--p-text-color);
+  font-size: 2.25rem;
+  font-weight: 700;
   transition: color 0.3s ease;
+  background: linear-gradient(135deg, var(--p-primary-color), #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .app-title p {
-  margin: 0 0 30px 0;
-  color: var(--text-color-secondary);
-  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+  color: var(--p-text-color-secondary);
+  font-size: 1rem;
   transition: color 0.3s ease;
+  line-height: 1.5;
 }
 
 /* Error Message */
 .error-message {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 /* Button visibility */
@@ -75,71 +94,140 @@
   display: none !important;
 }
 
-/* Google Button Styling */
+/* Google Button Container - Responsive */
 .google-button-container {
-  margin: 30px 0;
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
 }
 
 .google-signin-button {
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
 }
 
-/* Style the Google button to fit our design */
+/* Enhanced Google Button Styling */
 .google-signin-button > div {
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 .google-signin-button > div:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Override Google button styles to match our theme */
 .google-signin-button iframe {
-  border-radius: 8px !important;
+  border-radius: 12px !important;
 }
 
+/* Disclaimer */
 .disclaimer {
-  margin-top: 20px;
-  color: var(--text-color-secondary);
+  margin-top: 1.5rem;
+  color: var(--p-text-color-secondary);
   transition: color 0.3s ease;
 }
 
 .disclaimer small {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
-/* Dark mode adjustments for login container background */
-:host-context(.p-dark) .login-container {
+/* Dark mode adjustments */
+:host-context(.app-dark) .login-container {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
-/* Responsive design */
-@media (max-width: 480px) {
+:host-context(.app-dark) .login-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(30, 30, 30, 0.8);
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
   .login-container {
-    padding: 10px;
+    padding: 2rem;
   }
 
-  .theme-toggle-container {
-    top: 10px;
-    right: 10px;
-  }
-
-  .theme-toggle-btn {
-    width: 40px !important;
-    height: 40px !important;
+  .login-content {
+    padding: 2.5rem;
   }
 
   .app-title h2 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
+  }
+
+  .app-title p {
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle-btn {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+  }
+}
+
+/* Mobile/Tablet (up to 1023px) */
+@media (max-width: 1023px) {
+  .login-container {
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 4rem;
+  }
+
+  .login-card {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .login-content {
+    padding: 1.25rem;
+  }
+
+  .app-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .app-title h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .app-title p {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .theme-toggle-container {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .theme-toggle-btn {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
+  .google-button-container {
+    margin: 1.25rem 0;
   }
 
   .google-signin-button {
     max-width: 100%;
+  }
+
+  .google-signin-button > div {
+    border-radius: 10px !important;
+  }
+
+  .disclaimer {
+    margin-top: 1.25rem;
+  }
+
+  .disclaimer small {
+    font-size: 0.8rem;
   }
 }

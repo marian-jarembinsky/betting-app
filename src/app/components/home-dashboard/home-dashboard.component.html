@@ -1,75 +1,107 @@
 <div class="dashboard-container">
-  <!-- Toolbar with theme toggle and logout -->
+  <!-- Responsive Toolbar with theme toggle and logout -->
   <p-toolbar *ngIf="!isLoading && isAuthenticated" styleClass="dashboard-toolbar">
     <div class="p-toolbar-group-start">
       <h2 class="dashboard-title">Tipovacka Dashboard</h2>
     </div>
-    <div class="p-toolbar-group-end">
+    <div class="p-toolbar-group-end toolbar-actions">
       <p-button
         [icon]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"
         [label]="isDarkMode ? 'Light Mode' : 'Dark Mode'"
+        [text]="isMobile"
         severity="secondary"
-        [outlined]="true"
+        [outlined]="!isMobile"
         (onClick)="toggleTheme()"
-        styleClass="mr-2">
+        styleClass="mr-2 theme-btn"
+        [pTooltip]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+        tooltipPosition="bottom">
       </p-button>
       <p-button
         label="Logout"
+        [text]="isMobile"
         icon="pi pi-sign-out"
         severity="danger"
-        (onClick)="logout()">
+        (onClick)="logout()"
+        styleClass="logout-btn"
+        pTooltip="Sign out"
+        tooltipPosition="bottom">
       </p-button>
     </div>
   </p-toolbar>
 
+  <!-- Loading state with responsive spinner -->
   <div *ngIf="isLoading" class="loading-container">
-    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8"></p-progressSpinner>
-    <p>Loading dashboard...</p>
+    <p-progressSpinner
+      styleClass="loading-spinner"
+      strokeWidth="8"
+      [style]="{'width': isMobile ? '3rem' : '4rem', 'height': isMobile ? '3rem' : '4rem'}">
+    </p-progressSpinner>
+    <p class="loading-text">Loading dashboard...</p>
   </div>
 
+  <!-- User info section with responsive layout -->
   <div *ngIf="!isLoading && isAuthenticated && user" class="user-info">
     <p-card header="Welcome back!" styleClass="user-card">
-      <div class="user-profile-content">
+      <div class="user-profile-content" [class.mobile-layout]="isMobile">
         <div class="user-avatar-section">
           <p-avatar
             *ngIf="user.picture; else avatarPlaceholder"
             [image]="user.picture"
-            size="xlarge"
-            shape="circle">
+            [size]="isMobile ? 'large' : 'xlarge'"
+            shape="circle"
+            styleClass="user-avatar">
           </p-avatar>
           <ng-template #avatarPlaceholder>
             <p-avatar
               [label]="user.name.charAt(0) || 'U'"
-              size="xlarge"
+              [size]="isMobile ? 'large' : 'xlarge'"
               shape="circle"
-              styleClass="bg-primary">
+              styleClass="bg-primary user-avatar">
             </p-avatar>
           </ng-template>
         </div>
 
         <div class="user-details">
-          <h3>{{ user.name }}</h3>
-          <p class="email">{{ user.email }}</p>
-          <p-tag
-            *ngIf="user.email"
-            severity="success"
-            icon="pi pi-check"
-            value="Email Verified">
-          </p-tag>
+          <h3 class="user-name">{{ user.name }}</h3>
+          <p class="user-email">{{ user.email }}</p>
+          <div class="user-tags">
+            <p-tag
+              *ngIf="user.email"
+              severity="success"
+              icon="pi pi-check"
+              value="Email Verified"
+              styleClass="verification-tag">
+            </p-tag>
+          </div>
         </div>
       </div>
     </p-card>
+
+    <!-- Additional dashboard content can go here -->
+    <div class="dashboard-content">
+      <div class="content-grid">
+        <!-- Placeholder for future dashboard widgets -->
+        <p-card header="Quick Stats" styleClass="stats-card">
+          <div class="stats-content">
+            <p>Dashboard content will be added here...</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
   </div>
 
+  <!-- Not authenticated state -->
   <div *ngIf="!isLoading && !isAuthenticated" class="not-authenticated">
-    <p-card header="Authentication Required">
-      <p>Please log in to view your dashboard</p>
-      <p-button
-        label="Go to Login"
-        icon="pi pi-sign-in"
-        (onClick)="router.navigate(['/login'])"
-        styleClass="mt-3">
-      </p-button>
+    <p-card header="Authentication Required" styleClass="auth-required-card">
+      <div class="auth-content">
+        <p>Please log in to view your dashboard</p>
+        <p-button
+          label="Go to Login"
+          icon="pi pi-sign-in"
+          (onClick)="router.navigate(['/login'])"
+          styleClass="mt-3 w-full login-redirect-btn">
+        </p-button>
+      </div>
     </p-card>
   </div>
 </div>

@@ -1,15 +1,19 @@
+/* Dashboard Container - Responsive Foundation */
 .dashboard-container {
-  padding: 20px;
-  max-width: 800px;
+  padding: 1rem;
+  max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
   background: var(--p-surface-ground);
   color: var(--p-text-color);
+  width: 100%;
 }
 
+/* Responsive Dashboard Toolbar */
 .dashboard-toolbar {
-  margin-bottom: 20px;
-  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .dashboard-title {
@@ -17,92 +21,245 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.toolbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Loading Container - Responsive */
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 50vh;
-  padding: 40px;
-  gap: 1rem;
+  padding: 2rem;
+  gap: 1.5rem;
 }
 
-.loading-container p {
-  font-size: 16px;
+.loading-text {
+  font-size: 1rem;
   color: var(--p-text-color-secondary);
+  text-align: center;
+}
+
+.loading-spinner {
+  color: var(--p-primary-color);
+}
+
+/* User Info Section - Responsive */
+.user-info {
+  margin-bottom: 2rem;
 }
 
 .user-card {
-  margin-bottom: 20px;
-  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .user-card:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .user-profile-content {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
 }
 
-.user-details h3 {
-  margin: 0 0 8px 0;
-  font-size: 1.25rem;
+.user-profile-content.mobile-layout {
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+}
+
+.user-avatar-section {
+  flex-shrink: 0;
+}
+
+.user-avatar {
+  border: 3px solid var(--p-surface-border);
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--p-text-color);
+  word-wrap: break-word;
 }
 
-.user-details .email {
-  margin: 0 0 12px 0;
-  font-size: 0.95rem;
+.user-email {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
   color: var(--p-text-color-secondary);
+  word-wrap: break-word;
 }
 
+.user-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.verification-tag {
+  font-size: 0.875rem;
+}
+
+/* Dashboard Content Grid */
+.dashboard-content {
+  margin-top: 2rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.stats-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-content {
+  padding: 1rem 0;
+}
+
+/* Not Authenticated State */
 .not-authenticated {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
+  min-height: 60vh;
+  padding: 2rem;
 }
 
-.not-authenticated p-card {
+.auth-required-card {
   width: 100%;
   max-width: 400px;
+  border-radius: 16px;
+  text-align: center;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .dashboard-toolbar .p-toolbar-group-end {
-    flex-direction: column;
-    gap: 8px;
+.auth-content {
+  padding: 1rem 0;
+}
+
+.login-redirect-btn {
+  margin-top: 1rem;
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .dashboard-container {
+    padding: 2rem;
   }
 
-  .dashboard-toolbar .p-toolbar-group-end .p-button {
+  .dashboard-title {
+    font-size: 2rem;
+  }
+
+  .user-name {
+    font-size: 1.75rem;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Mobile/Tablet (up to 1023px) */
+@media (max-width: 1023px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.25rem;
+  }
+
+  .toolbar-actions {
+    flex-direction: column;
     width: 100%;
+    gap: 0.75rem;
+  }
+
+  .toolbar-actions .p-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .loading-container {
+    padding: 1.5rem;
+  }
+
+  .user-card {
+    margin-bottom: 1rem;
   }
 
   .user-profile-content {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
+    gap: 1rem;
+    padding: 0;
   }
 
-  .dashboard-title {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard-container {
-    padding: 15px;
+  .user-name {
+    font-size: 1.3rem;
   }
 
-  .dashboard-title {
-    font-size: 1.1rem;
+  .user-email {
+    font-size: 0.95rem;
+  }
+
+  .user-tags {
+    justify-content: center;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .not-authenticated {
+    padding: 1rem;
+    min-height: 50vh;
+  }
+
+  .auth-required-card {
+    border-radius: 12px;
+  }
+
+  .login-redirect-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
 }
