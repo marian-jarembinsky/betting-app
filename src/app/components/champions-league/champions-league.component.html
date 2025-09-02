@@ -1,0 +1,374 @@
+<div class="champions-league-container">
+  <!-- Header Section -->
+  <p-card styleClass="header-card">
+    <div class="header-content">
+      <h2 class="page-title">Champions League 24/25 Results</h2>
+      <div class="header-actions">
+        <p-button
+          label="Refresh Data"
+          icon="pi pi-refresh"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="refreshData()"
+          [loading]="loading"
+          styleClass="mr-2">
+        </p-button>
+        <p-button
+          label="Add Match"
+          icon="pi pi-plus"
+          severity="primary"
+          (onClick)="showAddDialog()"
+          [disabled]="!isApiReady">
+        </p-button>
+      </div>
+    </div>
+  </p-card>
+
+  <!-- API Status Message -->
+  <p-message
+    *ngIf="!isApiReady && !loading"
+    severity="warn"
+    text="Connecting to Google Sheets API..."
+    styleClass="mt-3">
+  </p-message>
+
+  <!-- Filters Section -->
+  <p-card header="Filters" styleClass="filters-card mt-3" *ngIf="isApiReady">
+    <div class="filters-content">
+      <div class="filter-item">
+        <label for="roundFilter">Round:</label>
+        <p-dropdown
+          id="roundFilter"
+          [options]="rounds"
+          [(ngModel)]="selectedRound"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="onFilterChange()"
+          placeholder="Select Round"
+          styleClass="w-full">
+        </p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="statusFilter">Status:</label>
+        <p-dropdown
+          id="statusFilter"
+          [options]="statuses"
+          [(ngModel)]="selectedStatus"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="onFilterChange()"
+          placeholder="Select Status"
+          styleClass="w-full">
+        </p-dropdown>
+      </div>
+    </div>
+  </p-card>
+
+  <!-- Matches Table -->
+  <p-card header="Matches" styleClass="matches-card mt-3" *ngIf="isApiReady">
+    <p-table
+      [value]="filteredMatches"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="p-datatable-sm"
+      responsiveLayout="scroll">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Match #</th>
+          <th>Home Team</th>
+          <th class="d-mobile-none">Away Team</th>
+          <th class="d-mobile-none">Score</th>
+          <th class="d-desktop-block">Match Date</th>
+          <th class="d-desktop-block">Location</th>
+          <th>Round</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-match>
+        <tr>
+          <td>{{match.matchNumber}}</td>
+          <td>
+            <div class="team-cell">
+              <strong>{{match.homeTeam}}</strong>
+              <div class="d-desktop-none match-mobile">
+                vs {{match.awayTeam}}
+                <div *ngIf="match.homeScore !== undefined && match.awayScore !== undefined" class="score-mobile">
+                  {{match.homeScore}} - {{match.awayScore}}
+                </div>
+                <div class="location-mobile">
+                  {{match.location}}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="d-mobile-none">{{match.awayTeam}}</td>
+          <td class="d-mobile-none">
+            <span *ngIf="match.homeScore !== undefined && match.awayScore !== undefined">
+              {{match.homeScore}} - {{match.awayScore}}
+            </span>
+            <span *ngIf="match.homeScore === undefined || match.awayScore === undefined">
+              -
+            </span>
+          </td>
+          <td class="d-desktop-block">{{match.date}}</td>
+          <td class="d-desktop-block">{{match.location}}</td>
+          <td>
+            <p-tag [value]="'Round ' + match.roundNumber" severity="info"></p-tag>
+          </td>
+          <td>
+            <p-tag
+              [value]="match.status | titlecase"
+              [severity]="getStatusSeverity(match.status)">
+            </p-tag>
+          </td>
+          <td>
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              [outlined]="true"
+              size="small"
+              (onClick)="showEditDialog(match)"
+              pTooltip="Edit Match"
+              tooltipPosition="top">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center">
+            <div class="empty-state">
+              <i class="pi pi-info-circle" style="font-size: 2rem; color: var(--p-text-color-secondary);"></i>
+              <p>No matches found</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <!-- Loading State -->
+  <div *ngIf="loading && !isApiReady" class="loading-container">
+    <p-progressSpinner styleClass="loading-spinner"></p-progressSpinner>
+    <p>Loading Champions League data...</p>
+  </div>
+</div>
+
+<!-- Add Match Dialog -->
+<p-dialog
+  header="Add New Match"
+  [(visible)]="displayAddDialog"
+  [modal]="true"
+  [closable]="true"
+  [responsive]="true"
+  styleClass="match-dialog">
+
+  <div class="match-form">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="matchNumber">Match Number *</label>
+        <p-inputNumber
+          id="matchNumber"
+          [(ngModel)]="selectedMatch.matchNumber"
+          [min]="1"
+          placeholder="Match number"
+          styleClass="w-full">
+        </p-inputNumber>
+      </div>
+
+      <div class="form-field">
+        <label for="roundNumber">Round Number *</label>
+        <p-dropdown
+          id="roundNumber"
+          [options]="rounds.slice(1)"
+          [(ngModel)]="selectedMatch.roundNumber"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select Round"
+          styleClass="w-full">
+        </p-dropdown>
+      </div>
+
+      <div class="form-field">
+        <label for="homeTeam">Home Team *</label>
+        <input
+          pInputText
+          id="homeTeam"
+          [(ngModel)]="selectedMatch.homeTeam"
+          placeholder="Enter home team"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="awayTeam">Away Team *</label>
+        <input
+          pInputText
+          id="awayTeam"
+          [(ngModel)]="selectedMatch.awayTeam"
+          placeholder="Enter away team"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="date">Match Date *</label>
+        <input
+          pInputText
+          id="date"
+          [(ngModel)]="selectedMatch.date"
+          placeholder="e.g., 16/09/2025 18:45:00"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="location">Location</label>
+        <input
+          pInputText
+          id="location"
+          [(ngModel)]="selectedMatch.location"
+          placeholder="Stadium name"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="homeScore">Home Score</label>
+        <p-inputNumber
+          id="homeScore"
+          [(ngModel)]="selectedMatch.homeScore"
+          [min]="0"
+          [max]="20"
+          placeholder="Score"
+          styleClass="w-full">
+        </p-inputNumber>
+      </div>
+
+      <div class="form-field">
+        <label for="awayScore">Away Score</label>
+        <p-inputNumber
+          id="awayScore"
+          [(ngModel)]="selectedMatch.awayScore"
+          [min]="0"
+          [max]="20"
+          placeholder="Score"
+          styleClass="w-full">
+        </p-inputNumber>
+      </div>
+
+      <div class="form-field">
+        <label for="status">Status</label>
+        <p-dropdown
+          id="status"
+          [options]="statuses.slice(1)"
+          [(ngModel)]="selectedMatch.status"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select Status"
+          styleClass="w-full">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="cancelDialog()"
+        styleClass="mr-2">
+      </p-button>
+      <p-button
+        label="Add Match"
+        severity="primary"
+        (onClick)="saveMatch()"
+        [loading]="loading">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Match Dialog -->
+<p-dialog
+  header="Edit Match"
+  [(visible)]="displayEditDialog"
+  [modal]="true"
+  [closable]="true"
+  [responsive]="true"
+  styleClass="match-dialog">
+
+  <div class="match-form">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="editHomeTeam">Home Team</label>
+        <input
+          pInputText
+          id="editHomeTeam"
+          [(ngModel)]="selectedMatch.homeTeam"
+          [readonly]="true"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="editAwayTeam">Away Team</label>
+        <input
+          pInputText
+          id="editAwayTeam"
+          [(ngModel)]="selectedMatch.awayTeam"
+          [readonly]="true"
+          class="w-full" />
+      </div>
+
+      <div class="form-field">
+        <label for="editHomeScore">Home Score *</label>
+        <p-inputNumber
+          id="editHomeScore"
+          [(ngModel)]="selectedMatch.homeScore"
+          [min]="0"
+          [max]="20"
+          placeholder="Score"
+          styleClass="w-full">
+        </p-inputNumber>
+      </div>
+
+      <div class="form-field">
+        <label for="editAwayScore">Away Score *</label>
+        <p-inputNumber
+          id="editAwayScore"
+          [(ngModel)]="selectedMatch.awayScore"
+          [min]="0"
+          [max]="20"
+          placeholder="Score"
+          styleClass="w-full">
+        </p-inputNumber>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="cancelDialog()"
+        styleClass="mr-2">
+      </p-button>
+      <p-button
+        label="Update Result"
+        severity="primary"
+        (onClick)="updateMatch()"
+        [loading]="loading">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Toast Messages -->
+<p-toast></p-toast>

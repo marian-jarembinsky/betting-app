@@ -1,16 +1,7 @@
 import {Injectable, Inject, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject, Observable} from 'rxjs';
-
-export interface GoogleUser {
-  id: string;
-  email: string;
-  name: string;
-  picture: string;
-  given_name: string;
-  family_name: string;
-  rawToken?: string;
-}
+import { GoogleUser } from '../interfaces/user.interface';
 
 declare global {
   interface Window {

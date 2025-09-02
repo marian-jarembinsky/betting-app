@@ -80,10 +80,29 @@
     <!-- Additional dashboard content can go here -->
     <div class="dashboard-content">
       <div class="content-grid">
-        <!-- Placeholder for future dashboard widgets -->
+        <!-- Champions League Quick Access -->
+        <p-card header="Champions League 24/25" styleClass="champions-card">
+          <div class="champions-content">
+            <div class="champions-info">
+              <i class="pi pi-trophy champions-icon"></i>
+              <p>View and manage Champions League match results from your Google Spreadsheet</p>
+            </div>
+            <div class="champions-actions">
+              <p-button
+                label="View Matches"
+                icon="pi pi-external-link"
+                severity="primary"
+                (onClick)="navigateToChampionsLeague()"
+                styleClass="w-full">
+              </p-button>
+            </div>
+          </div>
+        </p-card>
+
+        <!-- Future dashboard widgets placeholder -->
         <p-card header="Quick Stats" styleClass="stats-card">
           <div class="stats-content">
-            <p>Dashboard content will be added here...</p>
+            <p>More dashboard widgets coming soon...</p>
           </div>
         </p-card>
       </div>

@@ -152,6 +152,47 @@
   padding: 1rem 0;
 }
 
+/* Champions League Card */
+.champions-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(103, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border: 1px solid rgba(103, 126, 234, 0.2);
+}
+
+.champions-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(103, 126, 234, 0.15);
+}
+
+.champions-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.champions-info {
+  text-align: center;
+}
+
+.champions-icon {
+  font-size: 3rem;
+  color: var(--p-primary-color);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.champions-info p {
+  margin: 0;
+  color: var(--p-text-color-secondary);
+  line-height: 1.5;
+}
+
+.champions-actions {
+  margin-top: 1rem;
+}
+
 /* Not Authenticated State */
 .not-authenticated {
   display: flex;

@@ -8,7 +8,8 @@ import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { AuthService, GoogleUser } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { GoogleUser } from '../../interfaces/user.interface';
 import { ThemeService } from '../../services/theme.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -97,5 +98,9 @@ export class HomeDashboardComponent implements OnInit, OnDestroy {
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  navigateToChampionsLeague() {
+    this.router.navigate(['/champions-league']);
   }
 }
