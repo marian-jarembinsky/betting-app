@@ -109,7 +109,7 @@ export class SheetsService {
     return new Observable<GoogleSheetsApiResponse>(observer => {
       window.gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: this.SPREADSHEET_ID,
-        range: 'Sheet1!A:G' // Updated range for 7 columns: Match Number, Round Number, Date, Location, Home Team, Away Team, Result
+        range: 'Draw!A:G' // Updated range for 7 columns: Match Number, Round Number, Date, Location, Home Team, Away Team, Result
       }).then((response: GoogleSheetsApiResponse) => {
         observer.next(response);
         observer.complete();
@@ -237,7 +237,7 @@ export class SheetsService {
         return new Observable<GoogleSheetsUpdateResponse>(observer => {
           window.gapi.client.sheets.spreadsheets.values.update({
             spreadsheetId: this.SPREADSHEET_ID,
-            range: `Sheet1!G${rowIndex}`, // Update Result column (G)
+            range: `Draw!G${rowIndex}`, // Update Result column (G)
             valueInputOption: 'RAW',
             resource: {
               values: [[result]]
@@ -282,7 +282,7 @@ export class SheetsService {
     return new Observable<GoogleSheetsAppendResponse>(observer => {
       window.gapi.client.sheets.spreadsheets.values.append({
         spreadsheetId: this.SPREADSHEET_ID,
-        range: 'Sheet1!A:G', // Updated range for new format
+        range: 'Draw!A:G', // Updated range for new format
         valueInputOption: 'RAW',
         resource: { values }
       }).then((response: GoogleSheetsAppendResponse) => {
