@@ -1,0 +1,315 @@
+/* ── VARIABLES ── */
+:host {
+  --navbar-height: 64px;
+  --accent: #6366f1;
+  --accent-light: #a5b4fc;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+/* ── WRAPPER ── */
+.app-wrapper {
+  min-height: 100vh;
+  background: #0f0f13;
+  color: var(--text-primary);
+  position: relative;
+}
+
+/* ════════════════════════════════
+   NAVBAR
+════════════════════════════════ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height);
+  background: rgba(15, 15, 19, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 1000;
+  gap: 1rem;
+}
+
+/* Brand */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navbar-logo i {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.navbar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* User section */
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+  transition: background 0.2s ease;
+  min-width: 0;
+}
+
+.navbar-user:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-btn {
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════
+   LOGIN PAGE
+════════════════════════════════ */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+.login-logo {
+  width: 76px;
+  height: 76px;
+  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+}
+
+.login-logo i {
+  font-size: 2.2rem;
+  color: #fff;
+}
+
+.login-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
+}
+
+.login-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.google-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+}
+
+/* ════════════════════════════════
+   MAIN CONTENT
+════════════════════════════════ */
+.main-content {
+  padding: calc(var(--navbar-height) + 2rem) 2rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.welcome-card h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.welcome-card p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.welcome-card strong {
+  color: var(--accent-light);
+}
+
+/* ════════════════════════════════
+   RESPONSIVE — TABLET (≤ 768px)
+════════════════════════════════ */
+@media (max-width: 768px) {
+  :host {
+    --navbar-height: 56px;
+  }
+
+  .navbar {
+    padding: 0 1rem;
+  }
+
+  .navbar-title {
+    font-size: 1rem;
+  }
+
+  /* Hide email on tablet */
+  .user-email {
+    display: none;
+  }
+
+  .user-name {
+    font-size: 0.8rem;
+  }
+
+  .main-content {
+    padding: calc(var(--navbar-height) + 1.25rem) 1rem 1.5rem;
+  }
+
+  .welcome-card {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .welcome-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .login-card {
+    padding: 2.5rem 1.75rem;
+    border-radius: 20px;
+  }
+}
+
+/* ════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 480px)
+════════════════════════════════ */
+@media (max-width: 480px) {
+  .navbar-user {
+    padding: 0.3rem;
+    background: transparent;
+    border-color: transparent;
+    gap: 0.4rem;
+  }
+
+  /* Hide name + email on mobile — show only avatar + logout */
+  .user-info {
+    display: none;
+  }
+
+  .login-card {
+    padding: 2rem 1.25rem;
+    border-radius: 16px;
+    box-shadow: none;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+  }
+
+  .login-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+  }
+
+  .login-logo i {
+    font-size: 1.8rem;
+  }
+
+  .welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .welcome-card h2 {
+    font-size: 1.1rem;
+  }
+}
