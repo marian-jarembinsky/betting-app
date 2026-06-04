@@ -2,18 +2,18 @@
 :host {
   --navbar-height: 64px;
   --accent: #6366f1;
-  --accent-light: #a5b4fc;
-  --surface: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.08);
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
+  --accent-light: #818cf8;
+  --surface: rgba(15, 23, 42, 0.04);
+  --border: rgba(15, 23, 42, 0.1);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
   --text-muted: #64748b;
 }
 
 /* ── WRAPPER ── */
 .app-wrapper {
   min-height: 100vh;
-  background: #0f0f13;
+  background: #f8fafc;
   color: var(--text-primary);
   position: relative;
 }
@@ -27,7 +27,7 @@
   left: 0;
   right: 0;
   height: var(--navbar-height);
-  background: rgba(15, 15, 19, 0.85);
+  background: rgba(248, 250, 252, 0.85);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -200,9 +200,6 @@
   border-radius: 16px;
   padding: 1.75rem 2rem;
   margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .welcome-card h2 {
@@ -222,6 +219,7 @@
 .welcome-card strong {
   color: var(--accent-light);
 }
+
 
 /* ════════════════════════════════
    RESPONSIVE — TABLET (≤ 768px)

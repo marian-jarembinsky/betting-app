@@ -8,11 +8,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from './services/auth.service';
+import { MatchesComponent } from './components/matches/matches.component';
 
 declare const google: any;
 
@@ -22,7 +23,14 @@ const GOOGLE_CLIENT_ID = '418236255659-gmo2902rbluc5t85h8d2too2bq72kol4.apps.goo
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ButtonModule, AvatarModule, TooltipModule],
+  imports: [
+    RouterOutlet,
+    RouterModule,
+    ButtonModule,
+    AvatarModule,
+    TooltipModule,
+    MatchesComponent,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

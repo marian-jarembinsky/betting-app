@@ -1,4 +1,4 @@
-<div class="app-wrapper app-dark">
+<div class="app-wrapper">
 
   <!-- ── TOP NAVBAR (visible after login) ── -->
   @if (auth.currentUser()) {
@@ -60,6 +60,9 @@
           <p>You are signed in as <strong>{{ auth.currentUser()!.email }}</strong></p>
         </div>
       </div>
+
+      <!-- Matches Table directly on home page -->
+      <app-matches />
 
       <router-outlet />
     </div>

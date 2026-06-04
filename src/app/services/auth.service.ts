@@ -10,6 +10,7 @@ export interface GoogleUser {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   currentUser = signal<GoogleUser | null>(null);
+  private readonly tokenKey = 'google_credential';
 
   private decodeJwt(token: string): any {
     const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
@@ -31,7 +32,9 @@ export class AuthService {
         picture: payload.picture,
         sub: payload.sub,
       });
-      localStorage.setItem('google_credential', credential);
+      sessionStorage.setItem(this.tokenKey, credential);
+      // Remove any old token previously stored with localStorage.
+      localStorage.removeItem(this.tokenKey);
     } catch {
       console.error('Failed to parse Google credential');
     }
@@ -39,25 +42,32 @@ export class AuthService {
 
   logout(): void {
     this.currentUser.set(null);
-    localStorage.removeItem('google_credential');
+    sessionStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.tokenKey);
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem(this.tokenKey);
   }
 
   restoreSession(): void {
-    const stored = localStorage.getItem('google_credential');
+    const stored = sessionStorage.getItem(this.tokenKey);
+    // One-time cleanup of any token left from previous localStorage implementation.
+    localStorage.removeItem(this.tokenKey);
+
     if (stored) {
       try {
         // Check token expiry (exp claim)
         const payload = this.decodeJwt(stored);
         const isExpired = payload.exp * 1000 < Date.now();
         if (isExpired) {
-          localStorage.removeItem('google_credential');
+          sessionStorage.removeItem(this.tokenKey);
           return;
         }
         this.setUser(stored);
       } catch {
-        localStorage.removeItem('google_credential');
+        sessionStorage.removeItem(this.tokenKey);
       }
     }
   }
 }
-
