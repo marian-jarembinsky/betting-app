@@ -8,12 +8,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from './services/auth.service';
-import { MatchesComponent } from './components/matches/matches.component';
 
 declare const google: any;
 
@@ -25,11 +24,9 @@ const GOOGLE_CLIENT_ID = '418236255659-gmo2902rbluc5t85h8d2too2bq72kol4.apps.goo
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterModule,
     ButtonModule,
     AvatarModule,
     TooltipModule,
-    MatchesComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -39,6 +36,7 @@ export class App implements OnInit, AfterViewInit {
 
   protected auth = inject(AuthService);
   private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -84,5 +82,9 @@ export class App implements OnInit, AfterViewInit {
     this.auth.logout();
     // Re-render button after logout on next tick
     setTimeout(() => this.renderButton(), 100);
+  }
+
+  goToPlaceBet(): void {
+    this.router.navigate(['/place-bet']);
   }
 }

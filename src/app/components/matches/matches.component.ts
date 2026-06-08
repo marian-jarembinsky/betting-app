@@ -65,11 +65,14 @@ export class MatchesComponent implements OnInit {
     return this.matchesByGroup().get(group) ?? [];
   }
 
+  placeBet(match: Match): void {
+    this.router.navigate(['/place-bet', match.matchNumber]);
+  }
+
   goBack(): void {
     this.router.navigate(['/']);
   }
 }
-
 
 
 

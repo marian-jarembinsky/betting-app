@@ -181,6 +181,11 @@
   font-size: 0.8rem;
 }
 
+.mobile-bet-button {
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
 /* ════════════════════════════════
    RESPONSIVE — TABLET (≤ 768px)
 ════════════════════════════════ */

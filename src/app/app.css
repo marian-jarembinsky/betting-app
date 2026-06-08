@@ -200,6 +200,10 @@
   border-radius: 16px;
   padding: 1.75rem 2rem;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .welcome-card h2 {
