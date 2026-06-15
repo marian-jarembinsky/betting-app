@@ -27,6 +27,7 @@ import { AdminService } from '../../services/admin.service';
     TagModule,
   ],
   templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css',
 })
 export class AdminComponent implements OnInit {
   private matchesService = inject(MatchesService);

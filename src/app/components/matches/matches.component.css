@@ -39,11 +39,11 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.25);
   border-radius: 12px;
   padding: 1rem 1.25rem;
-  color: #fca5a5;
+  color: #b91c1c;
   font-size: 0.9rem;
 }
 
@@ -61,8 +61,8 @@
 
 .round-badge {
   display: inline-block;
-  background: rgba(99, 102, 241, 0.15);
-  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  color: #4f46e5;
   border-radius: 6px;
   padding: 0.15rem 0.45rem;
   font-size: 0.75rem;
@@ -99,8 +99,8 @@
 
 .vs-badge {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 6px;
   padding: 0.15rem 0.5rem;
   font-size: 0.72rem;
@@ -115,8 +115,8 @@
 }
 
 .no-result {
-  color: #334155;
-  font-weight: 700;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 /* ── MOBILE: show cards, hide table ── */
@@ -125,16 +125,18 @@
 
 /* ── MATCH CARDS (mobile) ── */
 .match-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 14px;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  transition: background 0.2s;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .match-card:hover {
-  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .match-card-meta {
