@@ -11,6 +11,18 @@
       </div>
 
       <div class="navbar-user">
+        @if (userService.isAdmin()) {
+          <button
+            class="admin-btn"
+            (click)="goToAdmin()"
+            pButton
+            label="Admin"
+            icon="pi pi-shield"
+            severity="secondary"
+            [text]="true"
+            size="small"
+          ></button>
+        }
         <img
           class="user-avatar"
           [src]="auth.currentUser()!.picture"

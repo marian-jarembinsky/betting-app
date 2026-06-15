@@ -1,4 +1,4 @@
-export interface Match {
+export interface MatchBet {
   matchNumber: number;
   roundNumber: number;
   date: string | null;
@@ -9,4 +9,3 @@ export interface Match {
   bet: string | null;
   dateOfLastBet: string | null;
 }
-

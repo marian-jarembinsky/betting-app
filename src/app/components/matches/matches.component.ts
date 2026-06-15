@@ -54,11 +54,21 @@ export class MatchesComponent implements OnInit {
         this.matches.set(data);
         this.loading.set(false);
       },
-      error: () => {
-        this.error.set('Failed to load matches. Please try again later.');
+      error: err => {
+        this.error.set(this.describeError(err));
         this.loading.set(false);
       },
     });
+  }
+
+  private describeError(err: { status?: number } | null): string {
+    if (err?.status === 401) {
+      return 'Your session has expired. Please sign in again.';
+    }
+    if (err?.status === 403) {
+      return 'You are not registered for this pool. Ask an admin to add you.';
+    }
+    return 'Failed to load matches. Please try again later.';
   }
 
   getMatchesForGroup(group: string): Match[] {

@@ -1,6 +1,6 @@
 .place-bet-page {
   padding: 1.5rem;
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -32,7 +32,7 @@
 
 .bet-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(720px, 1fr) 340px;
   gap: 1.25rem;
   align-items: start;
 }
@@ -105,6 +105,30 @@
 
 .table-view {
   display: block;
+  overflow-x: auto;
+}
+
+.bet-cell,
+.card-bet,
+.selected-bet {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.bet-cell {
+  flex-direction: column;
+}
+
+.bet-cell span,
+.card-bet small,
+.selected-bet small {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.choose-button {
+  white-space: nowrap;
 }
 
 .card-view {
@@ -186,6 +210,23 @@
   gap: 0.35rem;
 }
 
+.selected-bet {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+}
+
+.selected-bet span {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.selected-bet strong {
+  color: #1e293b;
+}
+
 .bet-field {
   display: flex;
   flex-direction: column;
@@ -242,7 +283,7 @@
   color: #b91c1c;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
   .bet-layout {
     grid-template-columns: 1fr;
   }

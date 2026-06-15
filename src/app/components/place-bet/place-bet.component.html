@@ -36,7 +36,7 @@
             [value]="matches()"
             [rowHover]="true"
             styleClass="p-datatable-sm"
-            [tableStyle]="{ 'min-width': '680px' }"
+            [tableStyle]="{ 'min-width': '760px' }"
           >
             <ng-template pTemplate="header">
               <tr>
@@ -45,8 +45,8 @@
                 <th>Home Team</th>
                 <th style="width:60px; text-align:center">VS</th>
                 <th>Away Team</th>
-                <th style="width:100px; text-align:center">Bet</th>
-                <th style="width:110px; text-align:right">Action</th>
+                <th style="width:130px; text-align:center">Bet</th>
+                <th style="width:130px; text-align:right">Action</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-match>
@@ -66,8 +66,13 @@
                 <td style="text-align:center"><span class="vs-badge">VS</span></td>
                 <td><strong>{{ match.awayTeam }}</strong></td>
                 <td style="text-align:center">
-                  @if (match.result) {
-                    <p-tag [value]="match.result" />
+                  @if (match.bet) {
+                    <div class="bet-cell">
+                      <p-tag [value]="match.bet" />
+                      @if (match.dateOfLastBet) {
+                        <span>{{ match.dateOfLastBet | date:'d MMM, HH:mm' }}</span>
+                      }
+                    </div>
                   } @else {
                     <span class="no-result">None</span>
                   }
@@ -79,6 +84,7 @@
                     icon="pi pi-check"
                     size="small"
                     severity="secondary"
+                    class="choose-button"
                     (click)="selectMatch(match)"
                   ></button>
                 </td>
@@ -110,8 +116,13 @@
               </span>
               <span class="match-card-bottom">
                 <span>{{ match.location }}</span>
-                @if (match.result) {
-                  <p-tag [value]="match.result" />
+                @if (match.bet) {
+                  <span class="card-bet">
+                    <p-tag [value]="match.bet" />
+                    @if (match.dateOfLastBet) {
+                      <small>{{ match.dateOfLastBet | date:'d MMM, HH:mm' }}</small>
+                    }
+                  </span>
                 }
               </span>
             </button>
@@ -145,6 +156,15 @@
               <i class="pi pi-map-marker"></i>
               <span>{{ selectedMatch()!.location }}</span>
             </div>
+            @if (selectedMatch()!.bet) {
+              <div class="selected-bet">
+                <span>Saved bet</span>
+                <strong>{{ selectedMatch()!.bet }}</strong>
+                @if (selectedMatch()!.dateOfLastBet) {
+                  <small>Updated {{ selectedMatch()!.dateOfLastBet | date:'d MMM, HH:mm' }}</small>
+                }
+              </div>
+            }
           </div>
 
           <label class="bet-field">

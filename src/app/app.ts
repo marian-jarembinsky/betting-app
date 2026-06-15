@@ -13,11 +13,12 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
+import { environment } from '../environments/environment';
 
 declare const google: any;
 
-// ⚠️  Replace with your actual Google OAuth Client ID from Google Cloud Console
-const GOOGLE_CLIENT_ID = '418236255659-gmo2902rbluc5t85h8d2too2bq72kol4.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = environment.googleClientId;
 
 @Component({
   selector: 'app-root',
@@ -35,12 +36,16 @@ export class App implements OnInit, AfterViewInit {
   @ViewChild('googleBtn') googleBtn!: ElementRef;
 
   protected auth = inject(AuthService);
+  protected userService = inject(UserService);
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.auth.restoreSession();
+      if (this.auth.currentUser()) {
+        this.loadRole();
+      }
     }
   }
 
@@ -55,7 +60,10 @@ export class App implements OnInit, AfterViewInit {
       if (typeof google !== 'undefined' && google?.accounts?.id) {
         google.accounts.id.initialize({
           client_id: GOOGLE_CLIENT_ID,
-          callback: (response: any) => this.auth.setUser(response.credential),
+          callback: (response: any) => {
+            this.auth.setUser(response.credential);
+            this.loadRole();
+          },
           auto_select: false,
           cancel_on_tap_outside: true,
         });
@@ -80,11 +88,23 @@ export class App implements OnInit, AfterViewInit {
 
   logout(): void {
     this.auth.logout();
+    this.userService.clear();
+    this.router.navigate(['/']);
     // Re-render button after logout on next tick
     setTimeout(() => this.renderButton(), 100);
   }
 
   goToPlaceBet(): void {
     this.router.navigate(['/place-bet']);
+  }
+
+  goToAdmin(): void {
+    this.router.navigate(['/admin']);
+  }
+
+  private loadRole(): void {
+    this.userService.loadMe().subscribe({
+      error: () => this.userService.clear(),
+    });
   }
 }

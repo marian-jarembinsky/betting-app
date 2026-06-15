@@ -7,8 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { Match } from '../../interfaces/match.interface';
+import { MatchBet } from '../../interfaces/match-bet.interface';
 import { MatchesService } from '../../services/matches.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-place-bet',
@@ -27,7 +28,7 @@ import { MatchesService } from '../../services/matches.service';
   styleUrl: './place-bet.component.css',
 })
 export class PlaceBetComponent implements OnInit {
-  matches = signal<Match[]>([]);
+  matches = signal<MatchBet[]>([]);
   loading = signal(true);
   submitting = signal(false);
   error = signal<string | null>(null);
@@ -47,7 +48,8 @@ export class PlaceBetComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private matchesService: MatchesService
+    private matchesService: MatchesService,
+    protected userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -70,14 +72,14 @@ export class PlaceBetComponent implements OnInit {
         this.loading.set(false);
         this.prefillBet();
       },
-      error: () => {
-        this.error.set('Failed to load your matches. Please try again later.');
+      error: err => {
+        this.error.set(this.describeError(err, 'Failed to load your matches. Please try again later.'));
         this.loading.set(false);
       },
     });
   }
 
-  selectMatch(match: Match): void {
+  selectMatch(match: MatchBet): void {
     this.success.set(null);
     this.error.set(null);
     this.selectedMatchNumber.set(match.matchNumber);
@@ -87,9 +89,9 @@ export class PlaceBetComponent implements OnInit {
 
   submitBet(): void {
     const match = this.selectedMatch();
-    const result = this.betControl.value.trim();
+    const bet = this.betControl.value.trim();
 
-    if (!match || this.betControl.invalid || !result) {
+    if (!match || this.betControl.invalid || !bet) {
       this.betControl.markAsTouched();
       return;
     }
@@ -98,20 +100,24 @@ export class PlaceBetComponent implements OnInit {
     this.error.set(null);
     this.success.set(null);
 
-    this.matchesService.placeBet(match.matchNumber, result).subscribe({
-      next: updatedMatch => {
+    this.matchesService.placeBet(match.matchNumber, bet).subscribe({
+      next: response => {
         this.matches.update(matches =>
           matches.map(current =>
             current.matchNumber === match.matchNumber
-              ? { ...current, result: updatedMatch?.result ?? result }
+              ? {
+                  ...current,
+                  bet: response?.result ?? bet,
+                  dateOfLastBet: response?.updatedAt ?? current.dateOfLastBet,
+                }
               : current
           )
         );
         this.success.set(`Bet saved for ${match.homeTeam} vs ${match.awayTeam}.`);
         this.submitting.set(false);
       },
-      error: () => {
-        this.error.set('Failed to place bet. Check your session and try again.');
+      error: err => {
+        this.error.set(this.describeError(err, 'Failed to place bet. Check your session and try again.'));
         this.submitting.set(false);
       },
     });
@@ -121,9 +127,21 @@ export class PlaceBetComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  private describeError(err: { status?: number } | null, fallback: string): string {
+    if (err?.status === 401) {
+      return 'Your session has expired. Please sign in again.';
+    }
+    if (err?.status === 403) {
+      return this.userService.isViewer()
+        ? 'Viewers are not allowed to place bets.'
+        : 'You are not authorized. You may not be registered for this pool.';
+    }
+    return fallback;
+  }
+
   private prefillBet(): void {
-    const currentResult = this.selectedMatch()?.result ?? '';
-    this.betControl.setValue(currentResult);
+    const currentBet = this.selectedMatch()?.bet ?? '';
+    this.betControl.setValue(currentBet);
     this.betControl.markAsPristine();
   }
 }
