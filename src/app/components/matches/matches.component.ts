@@ -7,6 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 import { MatchesService } from '../../services/matches.service';
+import { UserService } from '../../services/user.service';
 import { Match } from '../../interfaces/match.interface';
 
 @Component({
@@ -45,7 +46,8 @@ export class MatchesComponent implements OnInit {
 
   constructor(
     private matchesService: MatchesService,
-    private router: Router
+    private router: Router,
+    protected userService: UserService
   ) {}
 
   ngOnInit(): void {
